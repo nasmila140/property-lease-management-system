@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment History - Rental Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-building"></i>
+            <h2>RMS</h2>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="add_bills.html" class="nav-item">
+                <i class="fas fa-plus-circle"></i>
+                <span>Add Monthly Bills</span>
+            </a>
+            <a href="update_bills.html" class="nav-item">
+                <i class="fas fa-edit"></i>
+                <span>Update Bills</span>
+            </a>
+            <a href="view_history.html" class="nav-item active">
+                <i class="fas fa-history"></i>
+                <span>Payment History</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="logout.php" class="nav-item logout">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Navigation Bar -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>Payment History</h1>
+            </div>
+
+            <div class="topbar-right">
+                <div class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="adminUsername">Admin</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- History Content -->
+        <div class="dashboard-content">
+            <!-- Filter Section -->
+            <div class="form-section">
+                <div class="section-header">
+                    <h2>
+                        <i class="fas fa-filter"></i>
+                        Filter History
+                    </h2>
+                </div>
+
+                <form id="filterForm" class="filter-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="filter_user_id">
+                                <i class="fas fa-user"></i>
+                                Select Tenant
+                            </label>
+                            <select id="filter_user_id" name="user_id">
+                                <option value="">-- All Tenants --</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="filter_status">
+                                <i class="fas fa-info-circle"></i>
+                                Payment Status
+                            </label>
+                            <select id="filter_status" name="status">
+                                <option value="">-- All Status --</option>
+                                <option value="paid">Paid</option>
+                                <option value="unpaid">Unpaid</option>
+                                <option value="partial">Partial</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="filter_year">
+                                <i class="fas fa-calendar-alt"></i>
+                                Year
+                            </label>
+                            <select id="filter_year" name="year">
+                                <option value="">-- All Years --</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-filter"></i>
+                                Apply Filter
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- History Table Section -->
+            <div class="section-container">
+                <div class="section-header">
+                    <h2>
+                        <i class="fas fa-list"></i>
+                        Payment Records
+                    </h2>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search records...">
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table" id="historyTable">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable(0)">
+                                    ID
+                                    <i class="fas fa-sort"></i>
+                                </th>
+                                <th onclick="sortTable(1)">
+                                    Tenant Name
+                                    <i class="fas fa-sort"></i>
+                                </th>
+                                <th onclick="sortTable(2)">
+                                    Month
+                                    <i class="fas fa-sort"></i>
+                                </th>
+                                <th onclick="sortTable(3)">
+                                    Year
+                                    <i class="fas fa-sort"></i>
+                                </th>
+                                <th onclick="sortTable(4)">
+                                    Rent
+                                    <i class="fas fa-sort"></i>
+                                </th>
+                                <th onclick="sortTable(5)">
+                                    Water Bill
+                                    <i class="fas fa-sort"></i>
+                                </th>
+                                <th onclick="sortTable(6)">
+                                    Sewage Bill
+                                    <i class="fas fa-sort"></i>
+                                </th>
+                                <th onclick="sortTable(7)">
+                                    Total
+                                    <i class="fas fa-sort"></i>
+                                </th>
+                                <th onclick="sortTable(8)">
+                                    Status
+                                    <i class="fas fa-sort"></i>
+                                </th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody">
+                            <tr>
+                                <td colspan="10" class="no-data">
+                                    <i class="fas fa-spinner fa-spin"></i> Loading...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Summary Section -->
+                <div class="summary-section">
+                    <div class="summary-card">
+                        <strong>Total Records:</strong>
+                        <span id="totalRecords">0</span>
+                    </div>
+                    <div class="summary-card">
+                        <strong>Total Amount:</strong>
+                        <span id="totalAmount">$0.00</span>
+                    </div>
+                    <div class="summary-card">
+                        <strong>Paid Amount:</strong>
+                        <span id="paidAmount">$0.00</span>
+                    </div>
+                    <div class="summary-card">
+                        <strong>Unpaid Amount:</strong>
+                        <span id="unpaidAmount">$0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="script.js"></script>
+    <script>
+        // Check authentication
+        checkAuth();
+
+        // Load users and years
+        loadUsers();
+        loadYears();
+        loadHistory();
+
+        // Load users from database
+        async function loadUsers() {
+            try {
+                const response = await fetch('get_users.php');
+                const data = await response.json();
+
+                if (data.success) {
+                    const userSelect = document.getElementById('filter_user_id');
+                    data.data.forEach(user => {
+                        const option = document.createElement('option');
+                        option.value = user.id;
+                        option.textContent = `${user.name} (${user.contact})`;
+                        userSelect.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                showToast('Failed to load tenants', 'error');
+            }
+        }
+
+        // Load years dynamically
+        function loadYears() {
+            const yearSelect = document.getElementById('filter_year');
+            const currentYear = new Date().getFullYear();
+
+            for (let year = currentYear; year >= currentYear - 10; year--) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                yearSelect.appendChild(option);
+            }
+        }
+
+        // Load payment history
+        async function loadHistory(filters = {}) {
+            try {
+                const params = new URLSearchParams(filters);
+                const response = await fetch('view_history.php?' + params);
+                const data = await response.json();
+
+                const tableBody = document.getElementById('historyTableBody');
+                tableBody.innerHTML = '';
+
+                if (data.success && data.data.bills.length > 0) {
+                    data.data.bills.forEach(bill => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${bill.id}</td>
+                            <td>${bill.name}</td>
+                            <td>${bill.month}</td>
+                            <td>${bill.year}</td>
+                            <td>$${parseFloat(bill.rent).toFixed(2)}</td>
+                            <td>$${parseFloat(bill.water_bill).toFixed(2)}</td>
+                            <td>$${parseFloat(bill.sewage_bill).toFixed(2)}</td>
+                            <td><strong>$${parseFloat(bill.total).toFixed(2)}</strong></td>
+                            <td><span class="status-badge ${bill.status}">${bill.status}</span></td>
+                            <td>
+                                <button class="btn-icon" onclick="viewDetails(${bill.id})" title="View Details">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+
+                    // Update summary
+                    updateSummary(data.data.summary);
+                } else {
+                    tableBody.innerHTML = '<tr><td colspan="10" class="no-data">No records found</td></tr>';
+                    updateSummary({ total_records: 0, total_amount: 0, paid_amount: 0, unpaid_amount: 0 });
+                }
+            } catch (error) {
+                showToast('Failed to load payment history', 'error');
+            }
+        }
+
+        // Update summary statistics
+        function updateSummary(summary) {
+            document.getElementById('totalRecords').textContent = summary.total_records;
+            document.getElementById('totalAmount').textContent = '$' + parseFloat(summary.total_amount).toFixed(2);
+            document.getElementById('paidAmount').textContent = '$' + parseFloat(summary.paid_amount).toFixed(2);
+            document.getElementById('unpaidAmount').textContent = '$' + parseFloat(summary.unpaid_amount).toFixed(2);
+        }
+
+        // Handle filter form submission
+        document.getElementById('filterForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const filters = {
+                user_id: document.getElementById('filter_user_id').value,
+                status: document.getElementById('filter_status').value,
+                year: document.getElementById('filter_year').value
+            };
+
+            loadHistory(filters);
+        });
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#historyTableBody tr');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+
+        // Sort table
+        let sortDirection = {};
+        function sortTable(columnIndex) {
+            const table = document.getElementById('historyTable');
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
+
+            if (!sortDirection[columnIndex]) {
+                sortDirection[columnIndex] = 'asc';
+            } else {
+                sortDirection[columnIndex] = sortDirection[columnIndex] === 'asc' ? 'desc' : 'asc';
+            }
+
+            rows.sort((a, b) => {
+                const aValue = a.cells[columnIndex].textContent.trim();
+                const bValue = b.cells[columnIndex].textContent.trim();
+
+                const aNum = parseFloat(aValue.replace(/[$,]/g, ''));
+                const bNum = parseFloat(bValue.replace(/[$,]/g, ''));
+
+                if (!isNaN(aNum) && !isNaN(bNum)) {
+                    return sortDirection[columnIndex] === 'asc' ? aNum - bNum : bNum - aNum;
+                }
+
+                return sortDirection[columnIndex] === 'asc'
+                    ? aValue.localeCompare(bValue)
+                    : bValue.localeCompare(aValue);
+            });
+
+            const tbody = table.querySelector('tbody');
+            tbody.innerHTML = '';
+            rows.forEach(row => tbody.appendChild(row));
+        }
+
+        // View bill details
+        function viewDetails(billId) {
+            showToast('Viewing details for Bill ID: ' + billId, 'info');
+        }
+    </script>
+</body>
+</html>

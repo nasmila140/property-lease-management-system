@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Rental Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-building"></i>
+            <h2>RMS</h2>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="add_bills.html" class="nav-item">
+                <i class="fas fa-plus-circle"></i>
+                <span>Add Monthly Bills</span>
+            </a>
+            <a href="update_bills.html" class="nav-item">
+                <i class="fas fa-edit"></i>
+                <span>Update Bills</span>
+            </a>
+            <a href="view_history.html" class="nav-item">
+                <i class="fas fa-history"></i>
+                <span>Payment History</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="logout.php" class="nav-item logout">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Navigation Bar -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>Dashboard</h1>
+            </div>
+
+            <div class="topbar-right">
+                <div class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="adminUsername">Admin</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card blue">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalUsers">0</h3>
+                        <p>Total Tenants</p>
+                    </div>
+                </div>
+
+                <div class="stat-card green">
+                    <div class="stat-icon">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalBills">0</h3>
+                        <p>Total Bills</p>
+                    </div>
+                </div>
+
+                <div class="stat-card orange">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="unpaidBills">0</h3>
+                        <p>Unpaid Bills</p>
+                    </div>
+                </div>
+
+                <div class="stat-card purple">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="paidBills">0</h3>
+                        <p>Paid Bills</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity Section -->
+            <div class="section-container">
+                <div class="section-header">
+                    <h2>
+                        <i class="fas fa-list"></i>
+                        Recent Bills
+                    </h2>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Tenant Name</th>
+                                <th>Month</th>
+                                <th>Rent</th>
+                                <th>Water Bill</th>
+                                <th>Sewage Bill</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentBillsTable">
+                            <tr>
+                                <td colspan="7" class="no-data">
+                                    <i class="fas fa-spinner fa-spin"></i> Loading...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h2>
+                    <i class="fas fa-bolt"></i>
+                    Quick Actions
+                </h2>
+                <div class="action-cards">
+                    <a href="add_bills.html" class="action-card">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Add New Bill</span>
+                    </a>
+                    <a href="update_bills.html" class="action-card">
+                        <i class="fas fa-edit"></i>
+                        <span>Update Bill</span>
+                    </a>
+                    <a href="view_history.html" class="action-card">
+                        <i class="fas fa-history"></i>
+                        <span>View History</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="script.js"></script>
+    <script>
+        // Check authentication on page load
+        checkAuth();
+
+        // Load dashboard data
+        loadDashboardData();
+
+        // Load dashboard statistics and recent bills
+        async function loadDashboardData() {
+            try {
+                const response = await fetch('get_dashboard_data.php');
+                const data = await response.json();
+
+                if (data.success) {
+                    // Update statistics
+                    document.getElementById('totalUsers').textContent = data.data.stats.total_users;
+                    document.getElementById('totalBills').textContent = data.data.stats.total_bills;
+                    document.getElementById('unpaidBills').textContent = data.data.stats.unpaid_bills;
+                    document.getElementById('paidBills').textContent = data.data.stats.paid_bills;
+
+                    // Update recent bills table
+                    const tableBody = document.getElementById('recentBillsTable');
+                    tableBody.innerHTML = '';
+
+                    if (data.data.recent_bills.length > 0) {
+                        data.data.recent_bills.forEach(bill => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${bill.name}</td>
+                                <td>${bill.month} ${bill.year}</td>
+                                <td>$${parseFloat(bill.rent).toFixed(2)}</td>
+                                <td>$${parseFloat(bill.water_bill).toFixed(2)}</td>
+                                <td>$${parseFloat(bill.sewage_bill).toFixed(2)}</td>
+                                <td><strong>$${parseFloat(bill.total).toFixed(2)}</strong></td>
+                                <td><span class="status-badge ${bill.status}">${bill.status}</span></td>
+                            `;
+                            tableBody.appendChild(row);
+                        });
+                    } else {
+                        tableBody.innerHTML = '<tr><td colspan="7" class="no-data">No bills found</td></tr>';
+                    }
+                } else {
+                    showToast(data.message, 'error');
+                }
+            } catch (error) {
+                showToast('Failed to load dashboard data', 'error');
+            }
+        }
+    </script>
+</body>
+</html>

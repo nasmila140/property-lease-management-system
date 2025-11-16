@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Bills - Rental Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-building"></i>
+            <h2>RMS</h2>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="dashboard.html" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="add_bills.html" class="nav-item">
+                <i class="fas fa-plus-circle"></i>
+                <span>Add Monthly Bills</span>
+            </a>
+            <a href="update_bills.html" class="nav-item active">
+                <i class="fas fa-edit"></i>
+                <span>Update Bills</span>
+            </a>
+            <a href="view_history.html" class="nav-item">
+                <i class="fas fa-history"></i>
+                <span>Payment History</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="logout.php" class="nav-item logout">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Navigation Bar -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>Update Bills</h1>
+            </div>
+
+            <div class="topbar-right">
+                <div class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="adminUsername">Admin</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Form Content -->
+        <div class="dashboard-content">
+            <!-- Search Section -->
+            <div class="form-section">
+                <div class="section-header">
+                    <h2>
+                        <i class="fas fa-search"></i>
+                        Search Bill
+                    </h2>
+                    <p>Select tenant and month to update bill information</p>
+                </div>
+
+                <form id="searchForm" class="search-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="search_user_id">
+                                <i class="fas fa-user"></i>
+                                Select Tenant
+                            </label>
+                            <select id="search_user_id" name="user_id" required>
+                                <option value="">-- Select Tenant --</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="search_month">
+                                <i class="fas fa-calendar"></i>
+                                Month
+                            </label>
+                            <select id="search_month" name="month" required>
+                                <option value="">-- Select Month --</option>
+                                <option value="January">January</option>
+                                <option value="February">February</option>
+                                <option value="March">March</option>
+                                <option value="April">April</option>
+                                <option value="May">May</option>
+                                <option value="June">June</option>
+                                <option value="July">July</option>
+                                <option value="August">August</option>
+                                <option value="September">September</option>
+                                <option value="October">October</option>
+                                <option value="November">November</option>
+                                <option value="December">December</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="search_year">
+                                <i class="fas fa-calendar-alt"></i>
+                                Year
+                            </label>
+                            <input type="number" id="search_year" name="year" min="2020" max="2050" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-search"></i>
+                                Search Bill
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Update Form Section (Hidden Initially) -->
+            <div id="updateSection" class="form-section" style="display: none;">
+                <div class="section-header">
+                    <h2>
+                        <i class="fas fa-edit"></i>
+                        Update Bill Details
+                    </h2>
+                </div>
+
+                <form id="updateBillForm" class="bill-form">
+                    <input type="hidden" id="bill_id" name="bill_id">
+
+                    <div class="info-card">
+                        <div class="info-item">
+                            <strong>Tenant:</strong>
+                            <span id="display_tenant"></span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Period:</strong>
+                            <span id="display_period"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="update_rent">
+                                <i class="fas fa-home"></i>
+                                Monthly Rent ($)
+                            </label>
+                            <input type="number" id="update_rent" name="rent" step="0.01" min="0" placeholder="0.00" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="update_water_bill">
+                                <i class="fas fa-tint"></i>
+                                Water Bill ($)
+                            </label>
+                            <input type="number" id="update_water_bill" name="water_bill" step="0.01" min="0" placeholder="0.00" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="update_sewage_bill">
+                                <i class="fas fa-recycle"></i>
+                                Sewage Bill ($)
+                            </label>
+                            <input type="number" id="update_sewage_bill" name="sewage_bill" step="0.01" min="0" placeholder="0.00" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="update_status">
+                                <i class="fas fa-info-circle"></i>
+                                Payment Status
+                            </label>
+                            <select id="update_status" name="status" required>
+                                <option value="unpaid">Unpaid</option>
+                                <option value="paid">Paid</option>
+                                <option value="partial">Partial</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-calculator"></i>
+                                Total Amount
+                            </label>
+                            <input type="text" id="update_total_display" readonly class="total-display" value="$0.00">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="document.getElementById('updateSection').style.display='none'">
+                            <i class="fas fa-times"></i>
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn-primary">
+                            <span class="btn-text">
+                                <i class="fas fa-save"></i>
+                                Update Bill
+                            </span>
+                            <span class="btn-loader" style="display: none;">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="script.js"></script>
+    <script>
+        // Check authentication
+        checkAuth();
+
+        // Load users into dropdown
+        loadUsers();
+
+        // Set current year as default
+        document.getElementById('search_year').value = new Date().getFullYear();
+
+        // Load users from database
+        async function loadUsers() {
+            try {
+                const response = await fetch('get_users.php');
+                const data = await response.json();
+
+                if (data.success) {
+                    const userSelect = document.getElementById('search_user_id');
+                    data.data.forEach(user => {
+                        const option = document.createElement('option');
+                        option.value = user.id;
+                        option.textContent = `${user.name} (${user.contact})`;
+                        userSelect.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                showToast('Failed to load tenants', 'error');
+            }
+        }
+
+        // Handle search form submission
+        document.getElementById('searchForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+
+            try {
+                const response = await fetch('search_bill.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Populate update form
+                    document.getElementById('bill_id').value = data.data.id;
+                    document.getElementById('display_tenant').textContent = data.data.name;
+                    document.getElementById('display_period').textContent = `${data.data.month} ${data.data.year}`;
+                    document.getElementById('update_rent').value = data.data.rent;
+                    document.getElementById('update_water_bill').value = data.data.water_bill;
+                    document.getElementById('update_sewage_bill').value = data.data.sewage_bill;
+                    document.getElementById('update_status').value = data.data.status;
+
+                    calculateUpdateTotal();
+
+                    // Show update section
+                    document.getElementById('updateSection').style.display = 'block';
+                    document.getElementById('updateSection').scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    showToast(data.message, 'error');
+                }
+            } catch (error) {
+                showToast('An error occurred while searching', 'error');
+            }
+        });
+
+        // Calculate total on input change
+        ['update_rent', 'update_water_bill', 'update_sewage_bill'].forEach(id => {
+            document.getElementById(id).addEventListener('input', calculateUpdateTotal);
+        });
+
+        function calculateUpdateTotal() {
+            const rent = parseFloat(document.getElementById('update_rent').value) || 0;
+            const water = parseFloat(document.getElementById('update_water_bill').value) || 0;
+            const sewage = parseFloat(document.getElementById('update_sewage_bill').value) || 0;
+            const total = rent + water + sewage;
+
+            document.getElementById('update_total_display').value = '$' + total.toFixed(2);
+        }
+
+        // Handle update form submission
+        document.getElementById('updateBillForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const btnText = document.querySelector('#updateBillForm .btn-text');
+            const btnLoader = document.querySelector('#updateBillForm .btn-loader');
+
+            // Show loader
+            btnText.style.display = 'none';
+            btnLoader.style.display = 'inline-block';
+
+            try {
+                const response = await fetch('update_bills.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                // Hide loader
+                btnText.style.display = 'inline-block';
+                btnLoader.style.display = 'none';
+
+                if (data.success) {
+                    showToast(data.message, 'success');
+                    document.getElementById('updateSection').style.display = 'none';
+                    document.getElementById('searchForm').reset();
+                    document.getElementById('search_year').value = new Date().getFullYear();
+                } else {
+                    showToast(data.message, 'error');
+                }
+            } catch (error) {
+                btnText.style.display = 'inline-block';
+                btnLoader.style.display = 'none';
+                showToast('An error occurred. Please try again.', 'error');
+            }
+        });
+    </script>
+</body>
+</html>

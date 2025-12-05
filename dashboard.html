@@ -198,10 +198,10 @@
                             row.innerHTML = `
                                 <td>${bill.name}</td>
                                 <td>${bill.month} ${bill.year}</td>
-                                <td>$${parseFloat(bill.rent).toFixed(2)}</td>
-                                <td>$${parseFloat(bill.water_bill).toFixed(2)}</td>
-                                <td>$${parseFloat(bill.sewage_bill).toFixed(2)}</td>
-                                <td><strong>$${parseFloat(bill.total).toFixed(2)}</strong></td>
+                                <td>Rs ${parseFloat(bill.rent).toFixed(2)}</td>
+                                <td>Rs ${parseFloat(bill.water_bill).toFixed(2)}</td>
+                                <td>Rs ${parseFloat(bill.sewage_bill).toFixed(2)}</td>
+                                <td><strong>Rs ${parseFloat(bill.total).toFixed(2)}</strong></td>
                                 <td><span class="status-badge ${bill.status}">${bill.status}</span></td>
                             `;
                             tableBody.appendChild(row);

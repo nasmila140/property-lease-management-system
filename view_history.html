@@ -193,15 +193,15 @@
                     </div>
                     <div class="summary-card">
                         <strong>Total Amount:</strong>
-                        <span id="totalAmount">$0.00</span>
+                        <span id="totalAmount">Rs 0.00</span>
                     </div>
                     <div class="summary-card">
                         <strong>Paid Amount:</strong>
-                        <span id="paidAmount">$0.00</span>
+                        <span id="paidAmount">Rs 0.00</span>
                     </div>
                     <div class="summary-card">
                         <strong>Unpaid Amount:</strong>
-                        <span id="unpaidAmount">$0.00</span>
+                        <span id="unpaidAmount">Rs 0.00</span>
                     </div>
                 </div>
             </div>
@@ -272,10 +272,10 @@
                             <td>${bill.name}</td>
                             <td>${bill.month}</td>
                             <td>${bill.year}</td>
-                            <td>$${parseFloat(bill.rent).toFixed(2)}</td>
-                            <td>$${parseFloat(bill.water_bill).toFixed(2)}</td>
-                            <td>$${parseFloat(bill.sewage_bill).toFixed(2)}</td>
-                            <td><strong>$${parseFloat(bill.total).toFixed(2)}</strong></td>
+                            <td>Rs ${parseFloat(bill.rent).toFixed(2)}</td>
+                            <td>Rs ${parseFloat(bill.water_bill).toFixed(2)}</td>
+                            <td>Rs ${parseFloat(bill.sewage_bill).toFixed(2)}</td>
+                            <td><strong>Rs ${parseFloat(bill.total).toFixed(2)}</strong></td>
                             <td><span class="status-badge ${bill.status}">${bill.status}</span></td>
                             <td>
                                 <button class="btn-icon" onclick="viewDetails(${bill.id})" title="View Details">
@@ -300,9 +300,9 @@
         // Update summary statistics
         function updateSummary(summary) {
             document.getElementById('totalRecords').textContent = summary.total_records;
-            document.getElementById('totalAmount').textContent = '$' + parseFloat(summary.total_amount).toFixed(2);
-            document.getElementById('paidAmount').textContent = '$' + parseFloat(summary.paid_amount).toFixed(2);
-            document.getElementById('unpaidAmount').textContent = '$' + parseFloat(summary.unpaid_amount).toFixed(2);
+            document.getElementById('totalAmount').textContent = 'Rs ' + parseFloat(summary.total_amount).toFixed(2);
+            document.getElementById('paidAmount').textContent = 'Rs ' + parseFloat(summary.paid_amount).toFixed(2);
+            document.getElementById('unpaidAmount').textContent = 'Rs ' + parseFloat(summary.unpaid_amount).toFixed(2);
         }
 
         // Handle filter form submission
@@ -345,8 +345,8 @@
                 const aValue = a.cells[columnIndex].textContent.trim();
                 const bValue = b.cells[columnIndex].textContent.trim();
 
-                const aNum = parseFloat(aValue.replace(/[$,]/g, ''));
-                const bNum = parseFloat(bValue.replace(/[$,]/g, ''));
+                const aNum = parseFloat(aValue.replace(/Rs\s*/g, '').replace(/,/g, ''));
+                const bNum = parseFloat(bValue.replace(/Rs\s*/g, '').replace(/,/g, ''));
 
                 if (!isNaN(aNum) && !isNaN(bNum)) {
                     return sortDirection[columnIndex] === 'asc' ? aNum - bNum : bNum - aNum;

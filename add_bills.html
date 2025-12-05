@@ -120,7 +120,7 @@
                         <div class="form-group">
                             <label for="rent">
                                 <i class="fas fa-home"></i>
-                                Monthly Rent ($)
+                                Monthly Rent (Rs)
                             </label>
                             <input type="number" id="rent" name="rent" step="0.01" min="0" placeholder="0.00" required>
                         </div>
@@ -128,7 +128,7 @@
                         <div class="form-group">
                             <label for="water_bill">
                                 <i class="fas fa-tint"></i>
-                                Water Bill ($)
+                                Water Bill (Rs)
                             </label>
                             <input type="number" id="water_bill" name="water_bill" step="0.01" min="0" placeholder="0.00" required>
                         </div>
@@ -136,7 +136,7 @@
                         <div class="form-group">
                             <label for="sewage_bill">
                                 <i class="fas fa-recycle"></i>
-                                Sewage Bill ($)
+                                Sewage Bill (Rs)
                             </label>
                             <input type="number" id="sewage_bill" name="sewage_bill" step="0.01" min="0" placeholder="0.00" required>
                         </div>
@@ -160,7 +160,7 @@
                                 <i class="fas fa-calculator"></i>
                                 Total Amount
                             </label>
-                            <input type="text" id="total_display" readonly class="total-display" value="$0.00">
+                            <input type="text" id="total_display" readonly class="total-display" value="Rs 0.00">
                         </div>
                     </div>
 
@@ -209,7 +209,7 @@
             const sewage = parseFloat(document.getElementById('sewage_bill').value) || 0;
             const total = rent + water + sewage;
 
-            document.getElementById('total_display').value = '$' + total.toFixed(2);
+            document.getElementById('total_display').value = 'Rs ' + total.toFixed(2);
         }
 
         // Load users from database

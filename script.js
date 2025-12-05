@@ -107,7 +107,7 @@ function getToastIcon(type) {
  * @returns {string} Formatted currency string
  */
 function formatCurrency(amount) {
-    return '$' + parseFloat(amount).toFixed(2);
+    return 'Rs ' + parseFloat(amount).toFixed(2);
 }
 
 /**
